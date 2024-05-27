@@ -7,26 +7,25 @@ import { useDebouncedCallback } from 'use-debounce';
 
 
 
-
-
 export default function Search({ placeholder }: { placeholder: string }) {
   const searchParams = useSearchParams();
-  const router = useRouter();
+  const pathname = usePathname();
+  const {replace} = useRouter();//添加router方法
+
+
   const handleSearch = useDebouncedCallback((term) => {
     console.log(`Searching... ${term}`);
 
     const params = new URLSearchParams(searchParams);
-    params.set('page', '1');
+    params.set('page','1');
 
-    if (term) {
-      params.set('query', term);
-    } else {
+    if(term){
+      params.set('query',term);
+    }else{
       params.delete('query');
     }
-
     //content
     replace(`${pathname}?${params.toString()}`);
- 
 
   }, 300);
   
